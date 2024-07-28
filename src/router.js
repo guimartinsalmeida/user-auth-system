@@ -3,9 +3,12 @@ const router = express.Router();
 const authController = require("./controllers/authController");
 const authUserMiddleware = require("./middleware/authUserMiddleware");
 
-router.get("/", (_req, res) => {
-  res.json({ message: "Welcome to the api" });
-});
+router.get("/", authController.welcome);
+router.get(
+  "/admin",
+  authUserMiddleware.validateAdmin,
+  authController.welcomeAdmin
+);
 router.get(
   "/user/:id",
   authUserMiddleware.checkToken,

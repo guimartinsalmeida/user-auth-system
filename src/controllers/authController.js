@@ -4,6 +4,13 @@ const bcrypt = require("bcrypt");
 require('dotenv').config()
 const secret = process.env.SECRET;
 
+exports.welcome = async (_req, res)=>{
+  return res.json({message: 'Welcome to the api'})
+}
+exports.welcomeAdmin = async (_req, res)=>{
+  return res.json({message: 'Welcome Admin'})
+}
+
 exports.findUserById = async (req, res) => {
   const id = req.params.id;
   try {

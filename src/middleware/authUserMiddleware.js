@@ -65,8 +65,30 @@ const validateUserLogin = async (req, res, next) => {
   }
   next();
 };
+
+const validateAdmin = async (req,res, next) =>{
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Access Denied" });
+  }
+  try {
+    const decoded = jwt.verify(token, secret);
+    const user = await User.findById(decoded.id)
+    if(!user || !user.isAdmin){
+      return res.status(401).json({message: 'Access not allowed'})
+    }
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ message: "Invalid Token" });
+  }
+
+}
 module.exports = {
   checkToken,
   validateUserCreation,
   validateUserLogin,
+  validateAdmin
 };
