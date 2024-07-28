@@ -30,9 +30,9 @@ The project is currently in development. 🚧
 - [x] **JWT Authentication:** Added middleware to protect routes using JWT.
 
 ### Advanced Features
-- [ ] **Admin Authentication:** Implement `GET /admin` endpoint protected by JWT middleware for admin access.
+- [x] **Admin Authentication:** Implement `GET /admin` endpoint protected by JWT middleware for admin access.
 - [ ] **User List Display:** Implement `GET /users` endpoint to display all registered users, protected by JWT.
-- [ ] **Populate Database:** Create an admin user in the database for initial testing.
+- [x] **Populate Database:** Create an admin user in the database for initial testing.
 - [ ] **Login Form:** Create a simple web interface using EJS for user login.
 - [ ] **Logout Functionality:** Implement `GET /logout` endpoint to handle user logout.
 
