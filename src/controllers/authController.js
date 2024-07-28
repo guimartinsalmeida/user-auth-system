@@ -11,6 +11,19 @@ exports.welcomeAdmin = async (_req, res)=>{
   return res.json({message: 'Welcome Admin'})
 }
 
+exports.findAll = async (_req,res)=>{
+  try {
+    const users = await User.find({}, '-password')
+    if (!users) {
+      res.status(404).json({ message: "Users not found" });
+    }
+    res.status(200).json({ users });
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Server error' });
+  }
+}
+
 exports.findUserById = async (req, res) => {
   const id = req.params.id;
   try {

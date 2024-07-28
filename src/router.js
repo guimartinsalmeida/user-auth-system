@@ -9,6 +9,10 @@ router.get(
   authUserMiddleware.validateAdmin,
   authController.welcomeAdmin
 );
+router.get("/users", 
+  authUserMiddleware.checkToken, 
+  authController.findAll
+);
 router.get(
   "/user/:id",
   authUserMiddleware.checkToken,
