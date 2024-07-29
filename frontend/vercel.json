@@ -3,7 +3,7 @@
   "name": "frontend",
   "builds": [
     {
-      "src": "src/**/*",
+      "src": "vite.config.js",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
@@ -18,7 +18,7 @@
   ],
   "build": {
     "env": {
-      "REACT_APP_API_URL": "https://api-backend.vercel.app"
+      "VITE_API_URL": "https://api-backend.vercel.app"
     }
   }
 }
