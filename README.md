@@ -33,6 +33,8 @@ The project is currently in development. 🚧
 - [x] **Admin Authentication:** Implement `GET /admin` endpoint protected by JWT middleware for admin access.
 - [x] **User List Display:** Implement `GET /users` endpoint to display all registered users, protected by JWT.
 - [x] **Populate Database:** Create an admin user in the database for initial testing.
+- [x] **Sign up Form:** Create a simple web interface using ~~EJS~~ React for user Sign up as User Role.
+- [ ] **Admin login screen:** Create a simple web interface using ~~EJS~~ React for Admin users, so they can add new users and new admins, and also delete or update another users profile.
 - [ ] **Login Form:** Create a simple web interface using ~~EJS~~ React for user login.
 - [ ] **Logout Functionality:** Implement `GET /logout` endpoint to handle user logout.
 
