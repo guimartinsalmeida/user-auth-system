@@ -1,6 +1,7 @@
 
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { loginUser } from '../../utils/loginUser';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Email inválido').required('Email é obrigatório'),
@@ -8,8 +9,10 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
-  const handleSubmit = (values) => {
-    console.log('Dados do formulário:', values);
+  const handleSubmit = async (values, {setSubmitting}) => {
+    const response = await loginUser(values);
+    console.log('Login successful:', response);
+    setSubmitting(false)
   };
 
   return (
@@ -17,11 +20,11 @@ const Login = () => {
       <div className="w-80 max-w-md p-8 bg-custom-black shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
         <Formik
-          initialValues={{ email: '', password: '', passwordConfirmation: '' }}
+          initialValues={{ email: '', password: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {() => (
+          {({ isSubmitting }) => (
             <Form>
               <div className="mb-4">
                 <label htmlFor="email" className="block text-white-700">Email</label>
@@ -43,19 +46,10 @@ const Login = () => {
                 />
                 <ErrorMessage name="password" component="div" className="text-red-600 mt-1 text-sm" />
               </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-white-700">Password Confirmation</label>
-                <Field
-                  type="password"
-                  id="passwordConfirmation"
-                  name="passwordConfirmation"
-                  className="w-full p-2 border text-black border-gray-300 rounded bg-white mt-1"
-                />
-                <ErrorMessage name="password" component="div" className="text-red-600 mt-1 text-sm" />
-              </div>
               <button
                 type="submit"
                 className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
+                disabled={isSubmitting}
               >
                 Sign In
               </button>
