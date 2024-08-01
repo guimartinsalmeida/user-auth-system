@@ -48,9 +48,10 @@ exports.createUser = async (req, res) => {
     const user = new User({
       name,
       email,
-      passwordHash,
+      password: passwordHash,
     });
     await user.save();
+    console.log(user)
     res.status(201).json({ message: "User successfully created" });
   } catch (error) {
     console.log(error);
