@@ -4,6 +4,15 @@ const bcrypt = require("bcrypt");
 require('dotenv').config()
 const secret = process.env.SECRET;
 
+const handleError = async (err) =>{
+  let errors = {name:'', email:'', password:''} 
+
+  if(err.message.includes('User validation failed')){
+    console.log('err', err)
+  }
+
+}
+
 exports.welcome = async (_req, res)=>{
   return res.json({message: 'Welcome to the api'})
 }
@@ -44,20 +53,12 @@ exports.createUser = async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
-
-    const user = new User({
-      name,
-      email,
-      password: passwordHash,
-    });
+    const user = await User.create({name,email,password: passwordHash});
     await user.save();
-    console.log(user)
     res.status(201).json({ message: "User successfully created" });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ message: "An error occurred on the server, try again later" });
+    const errors = handleError(error);
+    res.status(400).json({ message: {errors} });
   }
 };
 
@@ -70,7 +71,7 @@ exports.login = async (req, res) => {
         id: user._id,
       },
       secret
-    );    res.status(200).json({ message: "User Authenticated succesfuly", token });
+    );    res.status(200).json({ message: "User Authenticated succesfuly", token, user });
   } catch (error) {
     console.log(error);
     res

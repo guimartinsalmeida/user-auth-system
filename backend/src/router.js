@@ -19,9 +19,7 @@ router.get(
   authController.findUserById
 );
 router.post(
-  "/auth/register",
-  authUserMiddleware.validateUserCreation,
-  authController.createUser
+  "/auth/register", authController.createUser
 );
 router.post(
   "/auth/login",

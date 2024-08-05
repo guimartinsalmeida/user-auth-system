@@ -2,6 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { loginUser } from '../../utils/loginUser';
+import { useNavigate } from "react-router-dom"
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Email inválido').required('Email é obrigatório'),
@@ -9,9 +10,15 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate()
+
   const handleSubmit = async (values, {setSubmitting}) => {
     const response = await loginUser(values);
-    console.log('Login successful:', response);
+    if(response.user.isAdmin){
+      navigate('/admin')
+    }else{
+      navigate('/user')
+    }
     setSubmitting(false)
   };
 
