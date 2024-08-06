@@ -63,6 +63,7 @@ const validateUserLogin = async (req, res, next) => {
   if (!checkPassword) {
     return res.status(401).json({ message: "password is not valid" });
   }
+  req.user = user;
   next();
 };
 

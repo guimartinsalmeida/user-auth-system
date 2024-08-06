@@ -8,11 +8,10 @@ try {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(values)
+    body: JSON.stringify(values),
+    credentials: 'include', // Importante para enviar cookies
   })
-  if(!response.ok){
-    console.log(response.error)
-  }
+  
   return response.json()
 } catch (error) {
   console.log(error)

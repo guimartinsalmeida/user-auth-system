@@ -7,7 +7,8 @@ export const registerUser = async (values) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify(values),
+      credentials: 'include', // Importante para enviar cookies
     });
 
     if (response.ok) {

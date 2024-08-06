@@ -55,7 +55,7 @@ exports.findUserById = async (req, res) => {
 
 const maxAge = 3 * 24 * 60 * 60
 const createToken = ( id) =>{
-  return jwt.sign({id}, 'User secret',{
+  return jwt.sign({id}, secret,{
     expiresIn: maxAge
   })
 }
@@ -77,16 +77,12 @@ exports.createUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email } = req.body;
-  const user = await User.findOne({ email }); 
    try {
-    const token = jwt.sign(
-      {
-        id: user._id,
-      },
-      secret
-    );  
-      res.status(200).json({ message: "User Authenticated succesfuly", token, user });
+    const user = req.user
+    const token = createToken(user._id)
+    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000, sameSite: 'Lax'})
+    await user.save();
+    res.status(200).json({ message: "User Authenticated succesfuly", user: user._id });
   } catch (error) {
     console.log(error);
     res

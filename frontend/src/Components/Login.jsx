@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { loginUser } from '../../utils/loginUser';
 import { useNavigate } from "react-router-dom"
+import { useState } from 'react';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Email inválido').required('Email é obrigatório'),
@@ -11,21 +12,29 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   const navigate = useNavigate()
-
+  const [errorMessage, setErrorMessage] = useState()
   const handleSubmit = async (values, {setSubmitting}) => {
-    const response = await loginUser(values);
-    if(response.user.isAdmin){
-      navigate('/admin')
-    }else{
-      navigate('/user')
+    setErrorMessage('')
+    try {
+      const response = await loginUser(values);
+      if(response.user){
+        console.log('success message', response)
+        navigate('/user')
+      }else if(!response.ok){
+        setErrorMessage(response.message)
+      }      
+    } catch (error) {
+      console.log(error)
+    }finally{
+      setSubmitting(false)
     }
-    setSubmitting(false)
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="w-80 max-w-md p-8 bg-custom-black shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-6">Login</h1>
+        {errorMessage ? <p className='text-red-600'>{errorMessage}</p>: null}
         <Formik
           initialValues={{ email: '', password: '' }}
           validationSchema={validationSchema}
