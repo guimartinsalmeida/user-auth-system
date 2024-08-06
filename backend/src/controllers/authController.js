@@ -4,13 +4,18 @@ const bcrypt = require("bcrypt");
 require('dotenv').config()
 const secret = process.env.SECRET;
 
-const handleError = async (err) =>{
-  let errors = {name:'', email:'', password:''} 
-
-  if(err.message.includes('User validation failed')){
-    console.log('err', err)
+const handleError =  (err) =>{
+  console.log(err.message)
+  let errors = '' 
+  if (err.code === 11000) {
+    const field = Object.keys(err.keyValue)[0];
+    errors = `This ${field} is already registered`;
+  } else if (err.message.includes('User validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      errors = properties.message;
+    });
   }
-
+  return errors
 }
 
 exports.welcome = async (_req, res)=>{
@@ -48,17 +53,26 @@ exports.findUserById = async (req, res) => {
   
 };
 
+const maxAge = 3 * 24 * 60 * 60
+const createToken = ( id) =>{
+  return jwt.sign({id}, 'User secret',{
+    expiresIn: maxAge
+  })
+}
+
 exports.createUser = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
     const user = await User.create({name,email,password: passwordHash});
+    const token = createToken(user._id)
+    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000, sameSite: 'Lax'})
     await user.save();
-    res.status(201).json({ message: "User successfully created" });
+    res.status(201).json({ user: user._id});
   } catch (error) {
     const errors = handleError(error);
-    res.status(400).json({ message: {errors} });
+    res.status(400).json({errors});
   }
 };
 
@@ -71,7 +85,8 @@ exports.login = async (req, res) => {
         id: user._id,
       },
       secret
-    );    res.status(200).json({ message: "User Authenticated succesfuly", token, user });
+    );  
+      res.status(200).json({ message: "User Authenticated succesfuly", token, user });
   } catch (error) {
     console.log(error);
     res

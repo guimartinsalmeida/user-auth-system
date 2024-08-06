@@ -7,13 +7,13 @@ export const registerUser = async (values) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify(values)
     });
 
-    if (!response.ok) {
-      console.log(`Error status: ${response.status}`);
+    if (response.ok) {
+      console.log(`status: ${response.status}`);
     }
-    console.log(response)
+    
     return response.json();
   } catch (error) {
     console.log(error);
