@@ -1,40 +1,16 @@
-import { useEffect, useState } from "react";
-import { getUser } from "../../utils/getUser";
-
+import { logoutUser } from "../../utils/logoutUser";
+import { useNavigate } from "react-router-dom";
 function User() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const getUserData = async () => {
-    const { data, error } = await getUser();
-
-    if (error) {
-      setError(error); 
-    } else {
-      setUsers(data.users)
-    }
-    setLoading(false)
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
-
+const navigate = useNavigate()
+  const handleClick = async () =>{
+      await logoutUser()
+      navigate('/login')
+  }
   return (
     <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user._id}>
-            Name: {user.name} Email: ({user.email})
-            <br />
-          </li>
-        ))}
-      </ul>
+      Welcome to the User page
+
+      <button onClick={()=> handleClick()}>Logout</button>
     </div>
   );
 }

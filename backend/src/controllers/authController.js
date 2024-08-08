@@ -90,3 +90,8 @@ exports.login = async (req, res) => {
       .json({ message: "An error occurred on the server, try again later" });
   }
 };
+
+exports.logout = async(req,res) =>{
+    res.clearCookie('jwt', {httpOnly: true, sameSite:'Lax'})
+    res.status(200).json({message:'Logged out successfully'})
+}

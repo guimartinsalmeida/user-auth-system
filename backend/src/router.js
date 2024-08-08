@@ -21,6 +21,7 @@ router.get(
 router.post(
   "/auth/register", authController.createUser
 );
+router.post("/logout", authController.logout)
 router.post(
   "/auth/login",
   authUserMiddleware.validateUserLogin,

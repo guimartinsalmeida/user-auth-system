@@ -18,11 +18,11 @@ const Login = () => {
     try {
       const response = await loginUser(values);
       console.log(response)
-      if(response.user && response.isAdmin){
+      if(response.user && response.user.isAdmin){
         console.log('success message', response)
+        navigate('/admin')
+      }else if(response.user && !response.user.isAdmin){
         navigate('/user')
-      }else if(response.user){
-        console.log('home')
       }else if(!response.ok){
         setErrorMessage(response.message)
       }      
