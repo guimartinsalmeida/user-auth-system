@@ -1,10 +1,12 @@
 const express = require('express')
+const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const router = require('./router')
 const app = express()
+app.use(cookieParser());
 const corsOptions = {
-  origin: 'http://localhost:5173', // Substitua com a URL do seu frontend
-  credentials: true, // Permite enviar cookies
+  origin: 'http://localhost:5173', 
+  credentials: true,
 };
 app.use(cors(corsOptions))
 app.use(express.json())

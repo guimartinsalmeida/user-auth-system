@@ -17,9 +17,12 @@ const Login = () => {
     setErrorMessage('')
     try {
       const response = await loginUser(values);
-      if(response.user){
+      console.log(response)
+      if(response.user && response.isAdmin){
         console.log('success message', response)
         navigate('/user')
+      }else if(response.user){
+        console.log('home')
       }else if(!response.ok){
         setErrorMessage(response.message)
       }      
