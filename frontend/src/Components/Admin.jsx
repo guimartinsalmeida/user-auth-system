@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { getUser } from "../../utils/getUser";
+import { logoutUser } from "../../utils/logoutUser";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate()
   const getUserData = async () => {
     const { data, error } = await getUser();
 
@@ -20,9 +22,12 @@ function Admin() {
   useEffect(() => {
     getUserData();
   }, []);
-
+  const handleClick = () =>{
+    logoutUser()
+    navigate('/')
+  }
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p>{error} <br />Please login with an Admin account</p>;
 
   return (
     <div>
@@ -35,6 +40,7 @@ function Admin() {
           </li>
         ))}
       </ul>
+      <button onClick={()=> handleClick()}>Logout</button>
     </div>
   );
 }
