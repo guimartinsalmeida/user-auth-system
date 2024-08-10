@@ -26,7 +26,7 @@ function Admin() {
     logoutUser()
     navigate('/')
   }
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading....</p>;
   if (error) return <p>{error} <br />Please login with an Admin account</p>;
 
   return (
